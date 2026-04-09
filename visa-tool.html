@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIFA World Cup 2026 — Visa Planning Tool | Oke Legal Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1F3A;
+    --navy-mid: #152D52;
+    --navy-light: #1E3D6E;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F7F0DC;
+    --white: #FFFFFF;
+    --off-white: #F9F7F3;
+    --light-gray: #EEF0F4;
+    --border: #DDD9D0;
+    --text: #1A1A2E;
+    --text-mid: #4A5568;
+    --text-light: #718096;
+    --green-bg: #EDF7F2; --green-txt: #1D6A47;
+    --amber-bg: #FEF7EC; --amber-txt: #7A4F0D;
+    --red-bg: #FDF1F1;   --red-txt: #8B1A1A;
+    --blue-bg: #EEF4FB;  --blue-txt: #1A3F6E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Mulish', sans-serif; font-weight: 300; background: var(--off-white); color: var(--text); min-height: 100vh; }
+
+  header { background: var(--navy); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.3); }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; border-bottom: 1px solid rgba(201,168,76,0.2); gap: 20px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-icon { width: 42px; height: 42px; border: 1.5px solid var(--gold); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; color: var(--white); letter-spacing: 0.03em; line-height: 1.1; }
+  .brand-sub { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-top: 2px; }
+  .tool-eyebrow { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: 500; text-align: right; }
+  .tool-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; color: var(--white); letter-spacing: 0.02em; }
+  .tool-title span { color: var(--gold-light); }
+
+  .selector-bar { background: var(--navy-mid); padding: 14px 40px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .selector-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 500; white-space: nowrap; }
+  .select-wrap { position: relative; flex: 1; max-width: 420px; min-width: 200px; }
+  .select-wrap select { width: 100%; padding: 10px 36px 10px 14px; background: rgba(255,255,255,0.07); border: 1px solid rgba(201,168,76,0.35); border-radius: 4px; color: var(--white); font-family: 'Mulish', sans-serif; font-size: 14px; font-weight: 400; cursor: pointer; appearance: none; outline: none; transition: border 0.2s, background 0.2s; }
+  .select-wrap select:focus { border-color: var(--gold); background: rgba(255,255,255,0.11); }
+  .select-wrap select option { background: var(--navy); color: var(--white); }
+  .select-arrow { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  .updated-tag { font-size: 10px; background: rgba(201,168,76,0.1); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.22); border-radius: 20px; padding: 5px 14px; letter-spacing: 0.08em; white-space: nowrap; }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 36px 40px 60px; }
+
+  .placeholder { text-align: center; padding: 80px 40px; border: 1.5px dashed var(--border); border-radius: 6px; background: var(--white); }
+  .placeholder-globe { width: 58px; height: 58px; margin: 0 auto 20px; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .placeholder h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; color: var(--navy); margin-bottom: 8px; }
+  .placeholder p { font-size: 14px; color: var(--text-light); }
+
+  .country-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; }
+  .country-heading h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: var(--navy); white-space: nowrap; }
+  .ch-line { height: 1px; flex: 1; background: var(--border); }
+  .ch-sub { font-size: 11px; color: var(--text-light); white-space: nowrap; letter-spacing: 0.05em; }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+
+  .hcard { background: var(--white); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; animation: fadeUp 0.3s ease both; }
+  .hcard:nth-child(2) { animation-delay: 0.07s; }
+  .hcard:nth-child(3) { animation-delay: 0.14s; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .card-head { background: var(--navy); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .card-head-left { display: flex; align-items: center; gap: 10px; }
+  .card-flag { font-size: 24px; line-height: 1; }
+  .card-country { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--white); letter-spacing: 0.02em; }
+  .card-cities { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; letter-spacing: 0.04em; }
+
+  .badge { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
+  .b-free { background: rgba(29,106,71,0.85); color: #D4EDDA; }
+  .b-eta  { background: rgba(26,63,110,0.85); color: #CCE0F7; }
+  .b-visa { background: rgba(122,79,13,0.85); color: #FDE8C0; }
+  .b-ban  { background: rgba(139,26,26,0.85); color: #FACCCC; }
+
+  .gold-bar { height: 3px; background: var(--gold); }
+
+  .card-body { padding: 18px 20px; }
+  .drow { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--light-gray); font-size: 13px; align-items: flex-start; }
+  .drow:last-of-type { border-bottom: none; }
+  .dlbl { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); min-width: 80px; flex-shrink: 0; padding-top: 2px; }
+  .dval { color: var(--text-mid); flex: 1; line-height: 1.6; }
+
+  .alert { margin-top: 14px; padding: 12px 14px; border-radius: 4px; font-size: 12.5px; line-height: 1.6; border-left: 3px solid; }
+  .a-info   { background: var(--blue-bg);  color: var(--blue-txt);  border-color: #4A90D9; }
+  .a-warn   { background: var(--amber-bg); color: var(--amber-txt); border-color: var(--gold); }
+  .a-danger { background: var(--red-bg);   color: var(--red-txt);   border-color: #C0392B; }
+
+  footer { background: var(--navy); border-top: 3px solid var(--gold); padding: 24px 40px; color: rgba(255,255,255,0.4); font-size: 11px; line-height: 1.8; text-align: center; }
+  footer a { color: var(--gold-light); text-decoration: none; }
+  footer strong { color: rgba(255,255,255,0.65); font-weight: 600; }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--white); margin-bottom: 8px; font-weight: 500; }
+  .footer-brand span { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .header-top, .selector-bar, main { padding-left: 20px; padding-right: 20px; }
+    footer { padding: 20px; }
+    .country-heading h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">Oke Legal Group</div>
+        <div class="brand-sub">Professional Immigration Services</div>
+      </div>
+    </div>
+    <div>
+      <div class="tool-eyebrow">Resource Tool</div>
+      <div class="tool-title">FIFA World Cup <span>2026</span> — Visa Guide</div>
+    </div>
+  </div>
+  <div class="selector-bar">
+    <span class="selector-label">Select your nationality</span>
+    <div class="select-wrap">
+      <select id="countrySelect" onchange="selectCountry(this.value)">
+        <option value="">— Choose your country —</option>
+      </select>
+      <svg class="select-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+        <path d="M1 1l5 5 5-5" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="updated-tag">Updated April 2026</span>
+  </div>
+</header>
+
+<main>
+  <div id="results">
+    <div class="placeholder">
+      <div class="placeholder-globe">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <h2>Select your nationality to begin</h2>
+      <p>Entry requirements for the United States, Canada, and Mexico will appear here.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-brand">Oke Legal Group <span>|</span> Professional Immigration Services</div>
+  <p><strong>Disclaimer:</strong> This tool is for general informational purposes only and does not constitute legal advice. Entry requirements are subject to change at any time. Always verify current requirements directly with official embassy and consulate websites before travel. Possession of a valid visa or authorization does not guarantee entry — border officers retain final authority on admission. Sources: US State Department (PP 10998, Jan 2026), IRCC Canada, Mexican Secretaría de Relaciones Exteriores. &nbsp;<a href="https://www.okelegalgroup.com">okelegalgroup.com</a></p>
+</footer>
+
+<script>
+const VISA_BOND = new Set(["Algeria","Angola","Antigua and Barbuda","Bangladesh","Benin","Bhutan","Botswana","Burundi","Cabo Verde","Cambodia","Central African Republic","Cote d'Ivoire","Cuba","Djibouti","Dominica","Ethiopia","Fiji","Gabon","Gambia","Georgia","Grenada","Guinea","Guinea-Bissau","Kyrgyzstan","Lesotho","Malawi","Mauritania","Mauritius","Mongolia","Mozambique","Namibia","Nepal","Nicaragua","Nigeria","Papua New Guinea","Sao Tome and Principe","Senegal","Seychelles","Tajikistan","Tanzania","Togo","Tonga","Tunisia","Turkmenistan","Tuvalu","Uganda","Vanuatu","Venezuela","Zambia","Zimbabwe"]);
+const US_FULL_BAN = new Set(["Afghanistan","Burma","Myanmar (Burma)","Chad","Republic of the Congo","Equatorial Guinea","Eritrea","Haiti","Iran","Laos","Libya","Mali","Niger","Sierra Leone","Somalia","South Sudan","Sudan","Syria","Yemen","Burkina Faso"]);
+const US_PARTIAL_BAN = new Set(["Angola","Antigua and Barbuda","Benin","Burundi","Cote d'Ivoire","Cuba","Dominica","Gabon","Gambia","Malawi","Mauritania","Nigeria","Senegal","Tanzania","Togo","Tonga","Venezuela","Zambia","Zimbabwe"]);
+const US_VWP = new Set(["Andorra","Australia","Austria","Belgium","Brunei","Chile","Croatia","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Italy","Japan","Latvia","Liechtenstein","Lithuania","Luxembourg","Malta","Monaco","Netherlands","New Zealand","Norway","Poland","Portugal","San Marino","Singapore","Slovakia","Slovenia","South Korea","Spain","Sweden","Switzerland","Taiwan","United Kingdom"]);
+const CAN_ETA = new Set(["Andorra","Antigua and Barbuda","Australia","Austria","Bahamas","Barbados","Belgium","British Virgin Islands","Brunei","Bulgaria","Chile","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hong Kong","Hungary","Iceland","Ireland","Israel","Italy","Japan","Latvia","Liechtenstein","Lithuania","Luxembourg","Malta","Mexico","Monaco","Netherlands","New Zealand","Norway","Papua New Guinea","Poland","Portugal","Romania","Samoa","San Marino","Singapore","Slovakia","Slovenia","Solomon Islands","South Korea","Spain","Sweden","Switzerland","Taiwan","United Arab Emirates","United Kingdom"]);
+const CAN_ETA_COND = new Set(["Argentina","Brazil","Morocco","Panama","Uruguay"]);
+const MEX_FREE = new Set(["United States","Canada","Australia","New Zealand","Japan","South Korea","Singapore","Taiwan","Hong Kong","Malaysia","Brunei","United Kingdom","Germany","France","Italy","Spain","Netherlands","Belgium","Austria","Switzerland","Sweden","Norway","Denmark","Finland","Ireland","Luxembourg","Iceland","Portugal","Greece","Czech Republic","Poland","Hungary","Slovakia","Slovenia","Estonia","Latvia","Lithuania","Croatia","Romania","Bulgaria","Malta","Cyprus","Andorra","Monaco","San Marino","Liechtenstein","Albania","Bosnia and Herzegovina","Kosovo","Montenegro","North Macedonia","Serbia","Argentina","Bolivia","Brazil","Chile","Colombia","Ecuador","Guyana","Paraguay","Peru","Suriname","Uruguay","Venezuela","Belize","Costa Rica","El Salvador","Guatemala","Honduras","Nicaragua","Panama","Bahamas","Barbados","Jamaica","Trinidad and Tobago","Dominican Republic"]);
+const COUNTRIES = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Canada","Central African Republic","Chad","Chile","China","Colombia","Costa Rica","Cote d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kosovo","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Libya","Liechtenstein","Lithuania","Luxembourg","Malawi","Malaysia","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar (Burma)","Namibia","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Pakistan","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Republic of the Congo","Romania","Russia","Rwanda","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
+function getUSA(c) {
+  if (c === 'United States') return { status:'free', badge:'Citizens — no requirements', rows:[
+    {l:'Entry',v:'US citizens enter the United States with a valid US passport or passport card. No visa or ESTA required.'},
+    {l:'Note',v:'US citizens are not subject to any entry restrictions for their own country.'}
+  ] };
+  if (US_FULL_BAN.has(c)) return { status:'ban', badge:'Entry ban — all visas suspended', rows:[
+    {l:'Restriction',v:'Full suspension under Presidential Proclamation 10998 (effective January 1, 2026). Both immigrant and all nonimmigrant visas — including B, F, M, J and all other categories — are suspended.'},
+    {l:'Exceptions',v:'Lawful permanent residents (green card holders); dual nationals traveling on a non-restricted country passport; certain athletes and officials via case-by-case national interest waivers.'},
+    {l:'World Cup',v:'Fan attendance as a B-2 tourist is effectively barred. Athletes may qualify for exceptions. Consult an immigration attorney before applying.'},
+    {l:'Visa bond',v: VISA_BOND.has(c) ? 'Also subject to $5,000–$15,000 visa bond if a visa were available.' : 'Not applicable under current suspension.'}
+  ], alert:{type:'danger',msg:'Entry to the United States is suspended for nationals of this country under Presidential Proclamation 10998. Visa applications may still be submitted but approval is highly unlikely. We strongly recommend consulting a qualified immigration attorney.'} };
+
+  if (US_PARTIAL_BAN.has(c)) return { status:'ban', badge:'Partial ban — B / F / M / J visas suspended', rows:[
+    {l:'Restriction',v:'Partial suspension under PP 10998 (effective January 1, 2026). Immigrant visas and B-1/B-2 visitor, F student, M vocational, and J exchange visitor visas are suspended.'},
+    {l:'Still available',v:'Other nonimmigrant categories such as H-1B, L-1, O-1, and P-1 may remain available, but consular officers are directed to reduce their validity periods.'},
+    {l:'World Cup',v:'B-2 tourist/visitor visas are suspended. Standard fan travel is not possible under current rules.'},
+    {l:'Visa bond',v: VISA_BOND.has(c) ? `Nationals of ${c} are also subject to the visa bond program ($5,000–$15,000) for B-2 visas, though B-2 is currently suspended.` : 'Not currently subject to the visa bond requirement.'}
+  ], alert:{type:'danger',msg:'B-2 tourist visas are suspended for this country. World Cup fan travel is not currently possible under standard visitor status. Athletes with O-1 or P-1 status may qualify for event-specific exceptions.'} };
+
+  if (US_VWP.has(c)) return { status:'free', badge:'Visa Waiver Program — ESTA', rows:[
+    {l:'Entry',v:'No visa required. Citizens travel under the Visa Waiver Program (VWP).'},
+    {l:'ESTA',v:'Apply online at esta.cbp.dhs.gov. Fee: $21 USD. Typically approved within minutes to 72 hours. Valid for 2 years or until passport expiry — multiple entries permitted.'},
+    {l:'Stay',v:'Up to 90 days per visit. May not be extended or converted to another immigration status.'},
+    {l:'Tip',v:'Apply at least 72 hours before travel. Note "FIFA World Cup 2026" as your purpose of visit.'},
+    {l:'Visa bond',v:'VWP countries are not subject to the visa bond requirement.'}
+  ] };
+
+  const bond = VISA_BOND.has(c);
+  return { status:'visa', badge:'B-2 visitor visa required', rows:[
+    {l:'Visa type',v:'B-2 Tourist / Visitor Visa. Apply at the nearest US Embassy or Consulate in your home country.'},
+    {l:'Process',v:'Complete Form DS-160 online at ceac.state.gov. Pay the ~$185 USD application fee. Schedule a consular interview. Biometrics will be collected.'},
+    {l:'Documents',v:'Valid passport (6+ months validity), DS-160 confirmation, financial proof, return/onward ticket, hotel reservations, and evidence of ties to your home country (employment, property, family).'},
+    {l:'FIFA PASS',v:'Ticket holders may enroll in FIFA PASS to request a priority B-2 interview appointment. This helps secure an earlier interview slot but does not change eligibility or guarantee visa issuance.'},
+    {l:'Processing',v:'Processing times vary by country and consulate — from a few days to several months. Apply as early as possible.'},
+    {l:'Visa bond',v: bond ? `Nationals of ${c} are subject to the US Visa Bond Pilot Program. If approved for a B-2 visa, you must post a refundable bond of $5,000–$15,000 via Form I-352 / Pay.gov. Amount is set at the consular interview. Visa is valid for max 3 months, single entry, 30-day authorized stay. Bond is refunded upon confirmed on-time departure through a commercial airport.` : 'Not currently subject to visa bond requirements.'}
+  ], alert: bond ? {type:'warn',msg:`Visa bond required: nationals of ${c} who are approved for a B-2 visa must post a refundable bond of $5,000–$15,000 at visa issuance. Bond is fully refunded upon timely departure through a commercial port of entry. Bond is forfeited for overstays.`} : null };
+}
+
+function getCanada(c) {
+  if (c === 'Canada') return { status:'free', badge:'Citizens — no requirements', rows:[
+    {l:'Entry',v:'Canadian nationals enter Canada with a valid Canadian passport or citizenship card. No eTA or visa required.'},
+    {l:'Note',v:'Canadian citizens are not subject to any entry restrictions for their own country.'}
+  ] };
+  if (c === 'United States') return { status:'free', badge:'No visa required', rows:[
+    {l:'Entry',v:'US citizens enter Canada visa-free with a valid US passport. No eTA required.'},
+    {l:'Stay',v:'Up to 6 months per visit.'},
+    {l:'Note',v:'Canadian border officers retain final authority to grant or refuse entry on arrival.'}
+  ] };
+
+  if (CAN_ETA.has(c)) return { status:'eta', badge:'eTA required for air travel', rows:[
+    {l:'Type',v:'Electronic Travel Authorization (eTA). Required for visa-exempt nationals traveling to Canada by air.'},
+    {l:'Apply',v:'Online at canada.ca/eta. Fee: CAD $7. Typically approved within minutes; occasionally takes longer during peak periods.'},
+    {l:'FIFA note',v:'Enter "FIFA World Cup 26" in the Background Questions free text field of your eTA application.'},
+    {l:'Land / sea',v:'No eTA required when entering Canada by car, bus, train, or boat — only a valid passport.'},
+    {l:'Stay',v:'Up to 6 months. The border officer determines the authorized period upon arrival.'}
+  ] };
+
+  if (CAN_ETA_COND.has(c)) return { status:'eta', badge:'eTA (conditional) or visitor visa', rows:[
+    {l:'Shortcut',v:`Nationals of ${c} may apply for an eTA (rather than a full visitor visa) if: (1) you currently hold a valid US nonimmigrant visa, OR (2) you held a Canadian visitor visa within the past 10 years. You must also be arriving by air.`},
+    {l:'Otherwise',v:'If neither condition is met, a full Temporary Resident Visa (TRV) must be obtained from a Canadian Embassy or Consulate.'},
+    {l:'Land / sea',v:'Arriving by land or sea always requires a full TRV, regardless of US visa status.'},
+    {l:'TRV fees',v:'CAD $100 application fee + CAD $85 biometrics fee.'},
+    {l:'FIFA note',v:'Enter "FIFA World Cup 26" in the free text of your application. Apply well in advance — processing can take weeks to months.'}
+  ], alert:{type:'info',msg:`Key shortcut: If you currently hold a valid US nonimmigrant visa, you qualify for a simple eTA rather than a full Canadian visitor visa — provided you are traveling by air. This significantly simplifies your entry requirements.`} };
+
+  return { status:'visa', badge:'Visitor visa (TRV) required', rows:[
+    {l:'Visa type',v:'Temporary Resident Visa (TRV). Apply at the Canadian Embassy or Consulate in your home country.'},
+    {l:'Fees',v:'CAD $100 application fee + CAD $85 biometrics fee (if not previously collected).'},
+    {l:'Documents',v:'Valid passport, financial proof, return/onward ticket, travel itinerary, World Cup match tickets, and evidence of ties to your home country.'},
+    {l:'FIFA note',v:'Enter "FIFA World Cup 26" in the additional information section of your application. IRCC specifically advises early applications for World Cup attendees.'},
+    {l:'Processing',v:'Processing times vary — from weeks to several months. No expedited processing exists for World Cup travel. Apply as early as possible.'},
+    {l:'Stay',v:'Up to 6 months is typically granted. The border officer has final authority upon arrival.'}
+  ] };
+}
+
+function getMexico(c) {
+  if (c === 'Mexico') return { status:'free', badge:'Citizens — no requirements', rows:[
+    {l:'Entry',v:'Mexican nationals enter Mexico with a valid Mexican passport or national ID. No visa, FMM form, or other entry authorization required.'},
+    {l:'Note',v:'Mexican citizens are not subject to any entry restrictions for their own country.'}
+  ] };
+  const free = MEX_FREE.has(c);
+  if (free) {
+    const colNote = c === 'Colombia' ? {type:'info',msg:'Colombian passport holders are visa-free for Mexico but must complete mandatory INM online pre-registration before travel. Required: valid passport (6+ months validity), proof of onward travel, hotel reservation, and contact details in Mexico and Colombia. This requirement has been in place since April 2022 due to elevated inadmissibility screening for Colombian nationals.'} : null;
+    return { status:'free', badge:'Visa-free — up to 180 days', rows:[
+      {l:'Entry',v:'No visa required. Present a valid passport to the immigration officer upon arrival.'},
+      {l:'FMM form',v:'All visitors must complete the Forma Migratoria Múltiple (FMM). Air arrivals: digital form via airline system or e-gate kiosk. Land arrivals: paper form at the border. Fee: ~983 MXN (~$57 USD) — typically included in airline ticket cost.'},
+      {l:'Stay',v:'Up to 180 days. Explicitly request "180 días" from the immigration officer — they may stamp a shorter period if you indicate a briefer trip.'},
+      {l:'Passport',v:'Must be valid for the full duration of your stay. Mexico does not enforce a 6-month-beyond-entry validity requirement.'},
+      {l:'Overstay',v:'~$44 USD per day fine paid on departure. Significant overstays may result in temporary or permanent re-entry bans.'}
+    ], alert: colNote };
+  }
+  return { status:'visa', badge:'Visa required', rows:[
+    {l:'Visa type',v:'Mexican Tourist Visa (Visa de No Inmigrante). Apply at the nearest Mexican Embassy or Consulate in your home country.'},
+    {l:'Fee',v:'~$53 USD, paid in cash at the consulate on the day of your appointment.'},
+    {l:'Documents',v:'Valid passport (6+ months validity), completed application form, color passport photo, proof of ties to home country (employment or enrollment letter), 3 months of bank statements, return flight ticket, and hotel reservations.'},
+    {l:'Interview',v:'In-person appointment required. Biometrics (photo and fingerprints) are collected at the consulate.'},
+    {l:'Visa shortcut',v:'If you hold a valid visa from the US, Canada, UK, Japan, or any Schengen Area country — physically stamped in your passport — you may enter Mexico visa-free for up to 180 days without a separate Mexican visa. Note: standalone paper permits (US I-20, Canadian work permit) do NOT qualify. Only full visa stamps and permanent resident cards are accepted.'},
+    {l:'PR shortcut',v:'Permanent residency cards from Canada, USA, UK, Chile, Colombia, Japan, Peru, or any Schengen Area country also allow visa-free entry to Mexico.'},
+    {l:'FMM form',v:'Still required on arrival for all visitors. Fee of ~983 MXN (~$57 USD) typically included in airline ticket.'}
+  ], alert:{type:'info',msg:`Important shortcut: If you hold a valid US, Canadian, UK, Japanese, or Schengen visa stamp in your passport, you do not need a separate Mexican visa and may enter visa-free for up to 180 days.`} };
+}
+
+const sel = document.getElementById('countrySelect');
+COUNTRIES.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+
+function selectCountry(c) {
+  if (!c) { document.getElementById('results').innerHTML = `<div class="placeholder"><div class="placeholder-globe"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h2>Select your nationality to begin</h2><p>Entry requirements for the United States, Canada, and Mexico will appear here.</p></div>`; return; }
+  const usa = getUSA(c), can = getCanada(c), mex = getMexico(c);
+  const hosts = [
+    {flag:'🇺🇸',name:'United States',cities:'Dallas · Kansas City · LA · Miami · NYC/NJ · Philadelphia · SF · Seattle',data:usa},
+    {flag:'🇨🇦',name:'Canada',cities:'Toronto · Vancouver',data:can},
+    {flag:'🇲🇽',name:'Mexico',cities:'Guadalajara · Mexico City · Monterrey',data:mex}
+  ];
+  const bm = {free:'b-free',eta:'b-eta',visa:'b-visa',ban:'b-ban'};
+  document.getElementById('results').innerHTML = `
+    <div class="country-heading"><h2>Entry requirements for ${c}</h2><div class="ch-line"></div><span class="ch-sub">FIFA World Cup 2026 &nbsp;·&nbsp; June 11 – July 19</span></div>
+    <div class="cards-grid">${hosts.map(({flag,name,cities,data},i)=>`
+      <div class="hcard" style="animation-delay:${i*0.07}s">
+        <div class="card-head">
+          <div class="card-head-left"><span class="card-flag">${flag}</span><div><div class="card-country">${name}</div><div class="card-cities">${cities}</div></div></div>
+          <span class="badge ${bm[data.status]}">${data.badge}</span>
+        </div>
+        <div class="gold-bar"></div>
+        <div class="card-body">
+          ${data.rows.map(r=>`<div class="drow"><span class="dlbl">${r.l}</span><span class="dval">${r.v}</span></div>`).join('')}
+          ${data.alert?`<div class="alert a-${data.alert.type}">${data.alert.msg}</div>`:''}
+        </div>
+      </div>`).join('')}
+    </div>`;
+}
+</script>
+</body>
+</html>
